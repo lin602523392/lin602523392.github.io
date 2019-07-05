@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="">
+    <!-- title -->
+
+
+
+
+<!-- keywords -->
+
+
+
+
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="author" content="Lin Weichao">
+    <meta name="renderer" content="webkit">
+    <meta name="copyright" content="Lin Weichao">
+    
+    <meta name="keywords" content="hexo,hexo-theme,hexo-blog">
+    
+    <meta name="description" content>
+    <meta http-equiv="Cache-control" content="no-cache">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>SpringDataRedis · The crazy days, the city lights</title>
+    <style type="text/css">
+    @font-face {
+        font-family: 'Oswald-Regular';
+        src: url("/font/Oswald-Regular.ttf");
+    }
+
+    body {
+        margin: 0;
+    }
+
+    header,
+    footer,
+    .back-top,
+    .sidebar,
+    .container,
+    .site-intro-meta,
+    .toc-wrapper {
+        display: none;
+    }
+
+    .site-intro {
+        position: relative;
+        z-index: 3;
+        width: 100%;
+        /* height: 50vh; */
+        overflow: hidden;
+    }
+
+    .site-intro-placeholder {
+        position: absolute;
+        z-index: -2;
+        top: 0;
+        left: 0;
+        width: calc(100% + 300px);
+        height: 100%;
+        background: repeating-linear-gradient(-45deg, #444 0, #444 80px, #333 80px, #333 160px);
+        background-position: center center;
+        transform: translate3d(-226px, 0, 0);
+        animation: gradient-move 2.5s ease-out 0s infinite;
+    }
+
+    @keyframes gradient-move {
+        0% {
+            transform: translate3d(-226px, 0, 0);
+        }
+        100% {
+            transform: translate3d(0, 0, 0);
+        }
+    }
+
+</style>
+
+    <link rel="preload" href="/css/style.css?v=20180824" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="stylesheet" href="/css/mobile.css?v=20180824" media="(max-width: 980px)">
+    
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    
+    <!-- /*! loadCSS. [c]2017 Filament Group, Inc. MIT License */
+/* This file is meant as a standalone workflow for
+- testing support for link[rel=preload]
+- enabling async CSS loading in browsers that do not support rel=preload
+- applying rel preload css once loaded, whether supported or not.
+*/ -->
+<script>
+(function( w ){
+	"use strict";
+	// rel=preload support test
+	if( !w.loadCSS ){
+		w.loadCSS = function(){};
+	}
+	// define on the loadCSS obj
+	var rp = loadCSS.relpreload = {};
+	// rel=preload feature support test
+	// runs once and returns a function for compat purposes
+	rp.support = (function(){
+		var ret;
+		try {
+			ret = w.document.createElement( "link" ).relList.supports( "preload" );
+		} catch (e) {
+			ret = false;
+		}
+		return function(){
+			return ret;
+		};
+	})();
+
+	// if preload isn't supported, get an asynchronous load by using a non-matching media attribute
+	// then change that media back to its intended value on load
+	rp.bindMediaToggle = function( link ){
+		// remember existing media attr for ultimate state, or default to 'all'
+		var finalMedia = link.media || "all";
+
+		function enableStylesheet(){
+			link.media = finalMedia;
+		}
+
+		// bind load handlers to enable media
+		if( link.addEventListener ){
+			link.addEventListener( "load", enableStylesheet );
+		} else if( link.attachEvent ){
+			link.attachEvent( "onload", enableStylesheet );
+		}
+
+		// Set rel and non-applicable media type to start an async request
+		// note: timeout allows this to happen async to let rendering continue in IE
+		setTimeout(function(){
+			link.rel = "stylesheet";
+			link.media = "only x";
+		});
+		// also enable media after 3 seconds,
+		// which will catch very old browsers (android 2.x, old firefox) that don't support onload on link
+		setTimeout( enableStylesheet, 3000 );
+	};
+
+	// loop through link elements in DOM
+	rp.poly = function(){
+		// double check this to prevent external calls from running
+		if( rp.support() ){
+			return;
+		}
+		var links = w.document.getElementsByTagName( "link" );
+		for( var i = 0; i < links.length; i++ ){
+			var link = links[ i ];
+			// qualify links to those with rel=preload and as=style attrs
+			if( link.rel === "preload" && link.getAttribute( "as" ) === "style" && !link.getAttribute( "data-loadcss" ) ){
+				// prevent rerunning on link
+				link.setAttribute( "data-loadcss", true );
+				// bind listeners to toggle media back
+				rp.bindMediaToggle( link );
+			}
+		}
+	};
+
+	// if unsupported, run the polyfill
+	if( !rp.support() ){
+		// run once at least
+		rp.poly();
+
+		// rerun poly on an interval until onload
+		var run = w.setInterval( rp.poly, 500 );
+		if( w.addEventListener ){
+			w.addEventListener( "load", function(){
+				rp.poly();
+				w.clearInterval( run );
+			} );
+		} else if( w.attachEvent ){
+			w.attachEvent( "onload", function(){
+				rp.poly();
+				w.clearInterval( run );
+			} );
+		}
+	}
+
+
+	// commonjs
+	if( typeof exports !== "undefined" ){
+		exports.loadCSS = loadCSS;
+	}
+	else {
+		w.loadCSS = loadCSS;
+	}
+}( typeof global !== "undefined" ? global : this ) );
+</script>
+
+    <link rel="icon" href="/assets/favicon.ico">
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.min.js" as="script">
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js" as="script">
+    <link rel="preload" href="/scripts/main.js" as="script">
+    <link rel="preload" as="font" href="/font/Oswald-Regular.ttf" crossorigin>
+    <link rel="preload" as="font" href="https://at.alicdn.com/t/font_327081_1dta1rlogw17zaor.woff" crossorigin>
+    
+    <!-- fancybox -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.js" defer></script>
+    <!-- 百度统计  -->
+    
+    <!-- 谷歌统计  -->
+    
+</head>
+
+    
+        <body class="post-body">
+    
+    
+<header class="header">
+
+    <div class="read-progress"></div>
+    <div class="header-sidebar-menu">&#xe775;</div>
+    <!-- post页的toggle banner  -->
+    
+    <div class="banner">
+            <div class="blog-title">
+                <a href="/" >Incredible</a>
+            </div>
+            <div class="post-title">
+                <a href="#" class="post-name">SpringDataRedis</a>
+            </div>
+    </div>
+    
+    <a class="home-link" href=/>Incredible</a>
+</header>
+    <div class="wrapper">
+        <div class="site-intro" style="
+
+
+
+
+
+
+
+height:50vh;
+">
+    
+    <!-- 主页  -->
+    
+    
+    <!-- 404页  -->
+            
+    <div class="site-intro-placeholder"></div>
+    <div class="site-intro-img" style="background-image: url(/intro/post-bg.jpg)"></div>
+    <div class="site-intro-meta">
+        <!-- 标题  -->
+        <h1 class="intro-title">
+            <!-- 主页  -->
+            
+            SpringDataRedis
+            <!-- 404 -->
+            
+        </h1>
+        <!-- 副标题 -->
+        <p class="intro-subtitle">
+            <!-- 主页副标题  -->
+            
+            
+            <!-- 404 -->
+            
+        </p>
+        <!-- 文章页meta -->
+        
+            <div class="post-intros">
+                <!-- 文章页标签  -->
+                
+                
+                    <div class="post-intro-read">
+                        <span>字数统计: <span class="post-count word-count">1.8k</span>阅读时长: <span class="post-count reading-time">7 min</span></span>
+                    </div>
+                
+                <div class="post-intro-meta">
+                    <span class="post-intro-calander iconfont-archer">&#xe676;</span>
+                    <span class="post-intro-time">2019/07/05</span>
+                    
+                    <span id="busuanzi_container_page_pv" class="busuanzi-pv">
+                        <span class="iconfont-archer">&#xe602;</span>
+                        <span id="busuanzi_value_page_pv"></span>
+                    </span>
+                    
+                    <span class="shareWrapper">
+                        <span class="iconfont-archer shareIcon">&#xe71d;</span>
+                        <span class="shareText">Share</span>
+                        <ul class="shareList">
+                            <li class="iconfont-archer share-qr" data-type="qr">&#xe75b;
+                                <div class="share-qrcode"></div>
+                            </li>
+                            <li class="iconfont-archer" data-type="weibo">&#xe619;</li>
+                            <li class="iconfont-archer" data-type="qzone">&#xe62e;</li>
+                            <li class="iconfont-archer" data-type="twitter">&#xe634;</li>
+                            <li class="iconfont-archer" data-type="facebook">&#xe67a;</li>
+                        </ul>
+                    </span>
+                </div>
+            </div>
+        
+    </div>
+</div>
+        <script>
+ 
+  // get user agent
+  var browser = {
+    versions: function () {
+      var u = window.navigator.userAgent;
+      return {
+        userAgent: u,
+        trident: u.indexOf('Trident') > -1, //IE内核
+        presto: u.indexOf('Presto') > -1, //opera内核
+        webKit: u.indexOf('AppleWebKit') > -1, //苹果、谷歌内核
+        gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') == -1, //火狐内核
+        mobile: !!u.match(/AppleWebKit.*Mobile.*/), //是否为移动终端
+        ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
+        android: u.indexOf('Android') > -1 || u.indexOf('Linux') > -1, //android终端或者uc浏览器
+        iPhone: u.indexOf('iPhone') > -1 || u.indexOf('Mac') > -1, //是否为iPhone或者安卓QQ浏览器
+        iPad: u.indexOf('iPad') > -1, //是否为iPad
+        webApp: u.indexOf('Safari') == -1, //是否为web应用程序，没有头部与底部
+        weixin: u.indexOf('MicroMessenger') == -1, //是否为微信浏览器
+        uc: u.indexOf('UCBrowser') > -1 //是否为android下的UC浏览器
+      };
+    }()
+  }
+  console.log("userAgent:" + browser.versions.userAgent);
+
+  // callback
+  function fontLoaded() {
+    console.log('font loaded');
+    if (document.getElementsByClassName('site-intro-meta')) {
+      document.getElementsByClassName('intro-title')[0].classList.add('intro-fade-in');
+      document.getElementsByClassName('intro-subtitle')[0].classList.add('intro-fade-in');
+      var postIntros = document.getElementsByClassName('post-intros')[0]
+      if (postIntros) {
+        postIntros.classList.add('post-fade-in');
+      }
+    }
+  }
+
+  // UC不支持跨域，所以直接显示
+  function asyncCb(){
+    if (browser.versions.uc) {
+      console.log("UCBrowser");
+      fontLoaded();
+    } else {
+      WebFont.load({
+        custom: {
+          families: ['Oswald-Regular']
+        },
+        loading: function () {  //所有字体开始加载
+          // console.log('loading');
+        },
+        active: function () {  //所有字体已渲染
+          fontLoaded();
+        },
+        inactive: function () { //字体预加载失败，无效字体或浏览器不支持加载
+          console.log('inactive: timeout');
+          fontLoaded();
+        },
+        timeout: 5000 // Set the timeout to two seconds
+      });
+    }
+  }
+
+  function asyncErr(){
+    console.warn('script load from CDN failed, will load local script')
+  }
+
+  // load webfont-loader async, and add callback function
+  function async(u, cb, err) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (cb) { o.addEventListener('load', function (e) { cb(null, e); }, false); }
+    if (err) { o.addEventListener('error', function (e) { err(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+
+  var asyncLoadWithFallBack = function(arr, success, reject) {
+      var currReject = function(){
+        reject()
+        arr.shift()
+        if(arr.length)
+          async(arr[0], success, currReject)
+        }
+
+      async(arr[0], success, currReject)
+  }
+
+  asyncLoadWithFallBack([
+    "https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.min.js", 
+    "https://cdn.bootcss.com/webfont/1.6.28/webfontloader.js",
+    "/lib/webfontloader.min.js"
+  ], asyncCb, asyncErr)
+</script>        
+        <img class="loading" src="/assets/loading.svg" style="display: block; margin: 6rem auto 0 auto; width: 6rem; height: 6rem;" />
+        <div class="container container-unloaded">
+            <main class="main post-page">
+    <article class="article-entry">
+        <h6 id="SpringDataRedis简介"><a href="#SpringDataRedis简介" class="headerlink" title="SpringDataRedis简介:"></a>SpringDataRedis简介:</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">1.1 Spring Framework是领先的全栈Java / JEE应用程序框架。它提供了一个轻量级容器和一个非侵入式编程模型，它通过使用依赖注入，AOP和便携式服务抽象来实现。</span><br><span class="line"></span><br><span class="line">[NoSQL]存储系统为经典RDBMS提供了水平可扩展性和速度的替代方案。在实现方面，键值存储代表NoSQL空间中最大（和最老）的成员之一。</span><br><span class="line"></span><br><span class="line">Spring Data Redis（SDR）框架通过Spring的优秀基础架构支持消除了与商店交互所需的冗余任务和样板代码，可以轻松编写使用Redis键值存储的Spring应用程序。</span><br></pre></td></tr></table></figure>
+
+<h5 id="坐标依赖"><a href="#坐标依赖" class="headerlink" title="坐标依赖:"></a><strong>坐标依赖:</strong></h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">&lt;!--缓存--&gt;</span><br><span class="line">     &lt;dependency&gt;</span><br><span class="line">         &lt;groupId&gt;redis.clients&lt;/groupId&gt;</span><br><span class="line">         &lt;artifactId&gt;jedis&lt;/artifactId&gt;</span><br><span class="line">         &lt;version&gt;2.9.0&lt;/version&gt;</span><br><span class="line">     &lt;/dependency&gt;</span><br><span class="line">     &lt;dependency&gt;</span><br><span class="line">         &lt;groupId&gt;org.springframework.data&lt;/groupId&gt;</span><br><span class="line">         &lt;artifactId&gt;spring-data-redis&lt;/artifactId&gt;</span><br><span class="line">         &lt;version&gt;2.0.5.RELEASE&lt;/version&gt;</span><br><span class="line">     &lt;/dependency&gt;</span><br><span class="line">     &lt;dependency&gt;</span><br><span class="line">         &lt;groupId&gt;junit&lt;/groupId&gt;</span><br><span class="line">         &lt;artifactId&gt;junit&lt;/artifactId&gt;</span><br><span class="line">         &lt;version&gt;4.12&lt;/version&gt;</span><br><span class="line">     &lt;/dependency&gt;</span><br><span class="line">     &lt;dependency&gt;</span><br><span class="line">         &lt;groupId&gt;org.springframework&lt;/groupId&gt;</span><br><span class="line">         &lt;artifactId&gt;spring-test&lt;/artifactId&gt;</span><br><span class="line">         &lt;version&gt;5.0.5.RELEASE&lt;/version&gt;</span><br><span class="line">     &lt;/dependency&gt;</span><br></pre></td></tr></table></figure>
+
+<h5 id="基于XML配置"><a href="#基于XML配置" class="headerlink" title="基于XML配置:"></a>基于XML配置:</h5><p>1.1创建配置properties配置文件.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">redis.host=127.0.0.1 	//IP   </span><br><span class="line">redis.port=6379 		//端口</span><br><span class="line">redis.pass= 			//密码</span><br><span class="line">redis.database=0 	</span><br><span class="line">redis.maxIdle=300  		//最大空闲数</span><br><span class="line">redis.maxWait=3000		//连接时的最大等待毫秒数</span><br></pre></td></tr></table></figure>
+
+<p>1.2创建applicationContext-redis.xml</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">context:property-placeholder</span> <span class="attr">location</span>=<span class="string">"classpath:redis-config.properties"</span> /&gt;</span></span><br><span class="line">   <span class="comment">&lt;!-- redis 相关配置 --&gt;</span> </span><br><span class="line">   <span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"poolConfig"</span> <span class="attr">class</span>=<span class="string">"redis.clients.jedis.JedisPoolConfig"</span>&gt;</span>  </span><br><span class="line">     <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"maxIdle"</span> <span class="attr">value</span>=<span class="string">"$&#123;redis.maxIdle&#125;"</span> /&gt;</span>   </span><br><span class="line">     <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"maxWaitMillis"</span> <span class="attr">value</span>=<span class="string">"$&#123;redis.maxWait&#125;"</span> /&gt;</span>  </span><br><span class="line">   <span class="tag">&lt;/<span class="name">bean</span>&gt;</span>  </span><br><span class="line">   <span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"JedisConnectionFactory"</span> 		<span class="attr">class</span>=<span class="string">"org.springframework.data.redis.connection.jedis.JedisConnectionFactory"</span> </span></span><br><span class="line"><span class="tag">       <span class="attr">p:host-name</span>=<span class="string">"$&#123;redis.host&#125;"</span> <span class="attr">p:port</span>=<span class="string">"$&#123;redis.port&#125;"</span> <span class="attr">p:password</span>=<span class="string">"$&#123;redis.pass&#125;"</span> <span class="attr">p:pool-config-ref</span>=<span class="string">"poolConfig"</span>/&gt;</span>  </span><br><span class="line">   <span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"redisTemplate"</span> <span class="attr">class</span>=<span class="string">"org.springframework.data.redis.core.RedisTemplate"</span>&gt;</span>  </span><br><span class="line">     <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"connectionFactory"</span> <span class="attr">ref</span>=<span class="string">"JedisConnectionFactory"</span> /&gt;</span>  </span><br><span class="line">   <span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th align="left">接口</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><em>密钥类型操作</em></td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left"><code>GeoOperations</code></td>
+<td align="left">Redis的地理空间操作的，比如<code>GEOADD</code>，<code>GEORADIUS</code>…</td>
+</tr>
+<tr>
+<td align="left"><code>HashOperations</code></td>
+<td align="left">Redis哈希操作</td>
+</tr>
+<tr>
+<td align="left"><code>HyperLogLogOperations</code></td>
+<td align="left">Redis的HyperLogLog操作，例如<code>PFADD</code>，<code>PFCOUNT</code>，…</td>
+</tr>
+<tr>
+<td align="left"><code>ListOperations</code></td>
+<td align="left">Redis列表操作</td>
+</tr>
+<tr>
+<td align="left"><code>SetOperations</code></td>
+<td align="left">Redis设置了操作</td>
+</tr>
+<tr>
+<td align="left"><code>ValueOperations</code></td>
+<td align="left">Redis字符串（或值）操作</td>
+</tr>
+<tr>
+<td align="left"><code>ZSetOperations</code></td>
+<td align="left">Redis zset（或排序集）操作</td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th><em>键绑定操作</em></th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>BoundGeoOperations</code></td>
+<td>Redis键绑定地理空间操作</td>
+</tr>
+<tr>
+<td><code>BoundHashOperations</code></td>
+<td>Redis散列键绑定操作</td>
+</tr>
+<tr>
+<td><code>BoundKeyOperations</code></td>
+<td>Redis键绑定操作</td>
+</tr>
+<tr>
+<td><code>BoundListOperations</code></td>
+<td>Redis列出键绑定操作</td>
+</tr>
+<tr>
+<td><code>BoundSetOperations</code></td>
+<td>Redis设置键绑定操作</td>
+</tr>
+<tr>
+<td><code>BoundValueOperations</code></td>
+<td>Redis字符串（或值）键绑定操作</td>
+</tr>
+<tr>
+<td><code>BoundZSetOperations</code></td>
+<td>Redis zset（或有序集）键绑定操作</td>
+</tr>
+</tbody></table>
+<h1 id><a href="#" class="headerlink" title=" "></a> </h1><h4 id="Stirng操作"><a href="#Stirng操作" class="headerlink" title="Stirng操作:"></a>Stirng操作:</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">redisTemplate.boundValueOps(<span class="string">"name"</span>).set(<span class="string">"lwc"</span>);		</span><br><span class="line">String str = (String) redisTemplate.boundValueOps(<span class="string">"lwc"</span>).get();</span><br><span class="line">redisTemplate.delete(<span class="string">"name"</span>);;</span><br></pre></td></tr></table></figure>
+
+<h4 id="Set类型操作"><a href="#Set类型操作" class="headerlink" title="Set类型操作"></a>Set类型操作</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//增</span></span><br><span class="line">redisTemplate.boundSetOps(<span class="string">"nameset"</span>).add(<span class="string">"路飞"</span>);			</span><br><span class="line">redisTemplate.boundSetOps(<span class="string">"nameset"</span>).add(<span class="string">"娜美"</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">//查</span></span><br><span class="line">Set members = redisTemplate.boundSetOps(<span class="string">"nameset"</span>).members();</span><br><span class="line"></span><br><span class="line"><span class="comment">//删</span></span><br><span class="line">redisTemplate.boundSetOps(<span class="string">"nameset"</span>).remove(<span class="string">"路飞"</span>);</span><br><span class="line"></span><br><span class="line">   <span class="comment">//删除整个集合</span></span><br><span class="line">redisTemplate.delete(<span class="string">"nameset"</span>);</span><br></pre></td></tr></table></figure>
+
+<h4 id="List类型操作"><a href="#List类型操作" class="headerlink" title="List类型操作"></a>List类型操作</h4><p>右压栈  后添加的对象排在后边</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">redisTemplate.boundListOps(<span class="string">"namelist"</span>).rightPush(<span class="string">"路飞"</span>);</span><br><span class="line">	</span><br><span class="line">List list = redisTemplate.boundListOps(<span class="string">"namelist"</span>).range(<span class="number">0</span>, <span class="number">10</span>);</span><br><span class="line">													<span class="comment">//(0,1)查询全部</span></span><br></pre></td></tr></table></figure>
+
+<p>左压栈  后添加的对象排在前边</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"> </span><br><span class="line">redisTemplate.boundListOps(<span class="string">"namelist"</span>).leftPush(<span class="string">"路飞"</span>);		</span><br><span class="line"></span><br><span class="line">List list = redisTemplate.boundListOps(<span class="string">"namelist"</span>).range(<span class="number">0</span>, <span class="number">10</span>);</span><br></pre></td></tr></table></figure>
+
+<p>根据索引查询元素</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">String s = (String) redisTemplate.boundListOps(<span class="string">"namelist"</span>).index(<span class="number">1</span>);</span><br></pre></td></tr></table></figure>
+
+<p>移除指定个数的值</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">redisTemplate.boundListOps(<span class="string">"namelist"</span>).remove(<span class="number">1</span>, <span class="string">"路飞"</span>);</span><br></pre></td></tr></table></figure>
+
+<h4 id="Hash类型操作"><a href="#Hash类型操作" class="headerlink" title="Hash类型操作"></a>Hash类型操作</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">redisTemplate.boundHashOps(<span class="string">"namehash"</span>).put(<span class="string">"c"</span>, <span class="string">"八戒"</span>);</span><br><span class="line">redisTemplate.boundHashOps(<span class="string">"namehash"</span>).put(<span class="string">"d"</span>, <span class="string">"沙僧"</span>);</span><br><span class="line"></span><br><span class="line">Set s = redisTemplate.boundHashOps(<span class="string">"namehash"</span>).keys();	</span><br><span class="line"></span><br><span class="line">List values = redisTemplate.boundHashOps(<span class="string">"namehash"</span>).values();</span><br><span class="line"></span><br><span class="line">Object object = redisTemplate.boundHashOps(<span class="string">"namehash"</span>).get(<span class="string">"b"</span>);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//根据KEY移除值</span></span><br><span class="line">redisTemplate.boundHashOps(<span class="string">"namehash"</span>).delete(<span class="string">"c"</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">//推荐</span></span><br><span class="line">      <span class="comment">//获取map键值对</span></span><br><span class="line">     redisTemplate.boundHashOperations.entries().forEach((m,n) -&gt;		System.out.println(<span class="string">"获取map键值对:"</span> + m + <span class="string">"-"</span> + n));</span><br></pre></td></tr></table></figure>
+
+<h4 id="ZSet类型操作"><a href="#ZSet类型操作" class="headerlink" title="ZSet类型操作"></a>ZSet类型操作</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">redisTemplate.boundZSetOps(<span class="string">"namezset"</span>).add(<span class="string">"曹操"</span>,<span class="number">100000</span>);</span><br><span class="line">redisTemplate.boundZSetOps(<span class="string">"namezset"</span>).add(<span class="string">"孙权"</span>,<span class="number">0</span>);</span><br><span class="line">redisTemplate.boundZSetOps(<span class="string">"namezset"</span>).add(<span class="string">"刘备"</span>,<span class="number">1000</span>);</span><br></pre></td></tr></table></figure>
+
+<p>升序排列(低到高)</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Set namezset = redisTemplate.boundZSetOps(<span class="string">"namezset"</span>).range(<span class="number">0</span>, -<span class="number">1</span>);</span><br></pre></td></tr></table></figure>
+
+<p>倒叙排列</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">  </span><br><span class="line">Set namezset =  redisTemplate.boundZSetOps(<span class="string">"namezset"</span>).reverseRange(<span class="number">0</span>,<span class="number">9</span>);</span><br></pre></td></tr></table></figure>
+
+<p>增加分数</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">redisTemplate.boundZSetOps(<span class="string">"namezset"</span>).incrementScore(<span class="string">"孙权"</span>,<span class="number">2000</span>);</span><br></pre></td></tr></table></figure>
+
+<p>查询值和分数</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">  </span><br><span class="line">Set&lt;ZSetOperations.TypedTuple&gt; namezset = redisTemplate.boundZSetOps(<span class="string">"namezset"</span>).reverseRangeWithScores(<span class="number">0</span>, -<span class="number">1</span>);</span><br><span class="line"><span class="keyword">for</span>(ZSetOperations.TypedTuple typedTuple:namezset)&#123;</span><br><span class="line">    System.out.print(<span class="string">"姓名："</span>+typedTuple.getValue());</span><br><span class="line">    System.out.println(<span class="string">"金币："</span>+typedTuple.getScore());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="过期时间设置"><a href="#过期时间设置" class="headerlink" title="过期时间设置"></a>过期时间设置</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">  </span><br><span class="line">redisTemplate.boundValueOps(<span class="string">"name"</span>).set(<span class="string">"itcast"</span>);</span><br><span class="line">redisTemplate.boundValueOps(<span class="string">"name"</span>).expire(<span class="number">10</span>,TimeUnit.SECONDS);</span><br><span class="line">					<span class="comment">//存值时指定过期时间和时间单位</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="缓存穿透、缓存击穿、缓存雪崩"><a href="#缓存穿透、缓存击穿、缓存雪崩" class="headerlink" title="缓存穿透、缓存击穿、缓存雪崩"></a>缓存穿透、缓存击穿、缓存雪崩</h3><h5 id="缓存穿透"><a href="#缓存穿透" class="headerlink" title="缓存穿透"></a>缓存穿透</h5><p>​    缓存穿透是指缓存和数据库中都没有的数据，而用户不断发起请求，如发起为id为负数的数据,主动式的恶意攻击,由于缓存是不命中时需要从数据库查询，查不到数据则不写入缓存，这将导致这个不存在的数据每次请求都要到数据库去查询，造成缓存穿透</p>
+<p>解决方案：</p>
+<p>​    1.接口层增加校验，如用户鉴权校验，id做基础校验，id&lt;=0的直接拦截；</p>
+<p>​    2.从缓存取不到的数据，在数据库中也没有取到，这时也可以将key-value对写为key-0。这样可以防止攻击用户反复用同一个id暴力攻击。</p>
+<p>​    3.缓存预热就是将数据提前加入到缓存中，当数据发生变更，再将最新的数据更新到缓存。</p>
+<p>​    4.每次系统 A 从数据库中只要没查到，就写一个空值到缓存里去，比如 <code>set -999 UNKNOWN</code>。然后设置一个过期时间，这样的话，下次有相同的 key 来访问的时候，在缓存失效之前，都可以直接从缓存中取数据。</p>
+<h5 id="缓存击穿"><a href="#缓存击穿" class="headerlink" title="缓存击穿"></a>缓存击穿</h5><p>​    缓存击穿是指缓存中没有但数据库中有的数据。这时由于并发用户特别多，同时读缓存没读到数据，又同时去数据库去取数据，引起数据库压力瞬间增大，造成过大压力。</p>
+<p>​    解决方案：</p>
+<p>​    1.设置热点数据永远不过期。</p>
+<p>​    2.基于 redis or zookeeper 实现互斥锁，等待第一个请求构建完缓存之后，再释放锁，进而其它请求才能通过该 key 访问数据。</p>
+<p>​    3.缓存预热 </p>
+<h5 id="缓存雪崩"><a href="#缓存雪崩" class="headerlink" title="缓存雪崩"></a>缓存雪崩</h5><p>​    缓存雪崩是指缓存数据大批量到过期时间，而查询数据量巨大，引起数据库压力过大甚至down机。</p>
+<p>​    解决方案：</p>
+<p>​    1.缓存数据的过期时间设置随机，防止同一时间大量数据过期现象发生。</p>
+<p>​    2.设置热点数据永远不过期。</p>
+<p>​    3.使用<strong>缓存预热</strong></p>
+<p>​    4.用户发送一个请求，系统 A 收到请求后，先查本地 ehcache 缓存，如果没查到再查 redis。如果 ehcache 和 redis 都没有，再查数据库，将数据库中的结果，写入 ehcache 和 redis 中。</p>
+<p>限流组件，可以设置每秒的请求，有多少能通过组件，剩余的未通过的请求，怎么办？<strong>走降级</strong>！可以返回一些默认的值，或者友情提示，或者空白的值。</p>
+<p>好处：</p>
+<ul>
+<li>数据库绝对不会死，限流组件确保了每秒只有多少个请求能通过。</li>
+<li>只要数据库不死，就是说，对用户来说，2/5 的请求都是可以被处理的。</li>
+<li>只要有 2/5 的请求可以被处理，就意味着你的系统没死，对用户来说，可能就是点击几次刷不出来页面，但是多点几次，就可以刷出来一次。</li>
+</ul>
+<p><strong>缓存击穿不同的是，缓存击穿指并发查同一条数据，缓存雪崩是不同数据都过期了，很多数据都查不到从而查数据库。</strong></p>
+
+    </article>
+    <!-- license  -->
+    
+        <div class="license-wrapper">
+            <p>原文作者：<a href="http://yoursite.com">Lin Weichao</a>
+            <p>原文链接：<a href="http://yoursite.com/2019/07/05/SpringDataRedis/">http://yoursite.com/2019/07/05/SpringDataRedis/</a>
+            <p>发表日期：<a href="http://yoursite.com/2019/07/05/SpringDataRedis/">July 5th 2019, 12:14:08 pm</a>
+            <p>更新日期：<a href="http://yoursite.com/2019/07/05/SpringDataRedis/">July 5th 2019, 12:14:38 pm</a>
+            <p>版权声明：本文采用<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">知识共享署名-非商业性使用 4.0 国际许可协议</a>进行许可</p>
+        </div>
+    
+    <!-- paginator  -->
+    <ul class="post-paginator">
+        <li class="next">
+            
+        </li>
+        <li class="previous">
+            
+                <div class="prevSlogan">Previous Post</div>
+                <a href= "/2019/07/05/YourFileName/" title= "YourFileName">
+                    <div class="prevTitle">YourFileName</div>
+                </a>
+            
+        </li>
+    </ul>
+    <!-- 评论插件 -->
+    <!-- 来必力City版安装代码 -->
+
+<!-- City版安装代码已完成 -->
+    
+    
+    <!-- partial('_partial/comment/changyan') -->
+    <!--PC版-->
+
+
+    
+    
+
+    <!-- 评论 -->
+</main>
+            <!-- profile -->
+            
+        </div>
+        <footer class="footer footer-unloaded">
+    <!-- social  -->
+    
+    <div class="social">
+        
+    
+        
+            
+                <a href="mailto:602523392@qq.com" class="iconfont-archer email" title=email ></a>
+            
+        
+    
+        
+            
+                <a href="//github.com/LinWeiChao" class="iconfont-archer github" target="_blank" title=github></a>
+            
+        
+    
+        
+            
+                <span class="iconfont-archer wechat" title=wechat>
+                  
+                  <img class="profile-qr" src="/assets/example_qr.png" />
+                </span>
+            
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+    </div>
+    
+    <!-- powered by Hexo  -->
+    <div class="copyright">
+        <span id="hexo-power">Powered by <a href="https://hexo.io/" target="_blank">Hexo</a></span><span class="iconfont-archer power">&#xe635;</span><span id="theme-info">theme <a href="https://github.com/fi3ework/hexo-theme-archer" target="_blank">Archer</a></span>
+    </div>
+    <!-- 不蒜子  -->
+    
+    <div class="busuanzi-container">
+    
+     
+    <span id="busuanzi_container_site_pv">PV: <span id="busuanzi_value_site_pv"></span> :)</span>
+    
+    </div>
+    
+</footer>
+    </div>
+    <!-- toc -->
+    
+    <div class="toc-wrapper" style=
+    
+
+
+
+
+
+
+
+top:50vh;
+
+    >
+        <div class="toc-catalog">
+            <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
+        </div>
+        <ol class="toc"><li class="toc-item toc-level-6"><a class="toc-link" href="#SpringDataRedis简介"><span class="toc-number">1.</span> <span class="toc-text">SpringDataRedis简介:</span></a></li></ol></li><li class="toc-item toc-level-5"><a class="toc-link" href="#坐标依赖"><span class="toc-number"></span> <span class="toc-text">坐标依赖:</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#基于XML配置"><span class="toc-number"></span> <span class="toc-text">基于XML配置:</span></a></li></ol></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#null"><span class="toc-number"></span> <span class="toc-text"> </span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Stirng操作"><span class="toc-number"></span> <span class="toc-text">Stirng操作:</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Set类型操作"><span class="toc-number"></span> <span class="toc-text">Set类型操作</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#List类型操作"><span class="toc-number"></span> <span class="toc-text">List类型操作</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Hash类型操作"><span class="toc-number"></span> <span class="toc-text">Hash类型操作</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#ZSet类型操作"><span class="toc-number"></span> <span class="toc-text">ZSet类型操作</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#过期时间设置"><span class="toc-number"></span> <span class="toc-text">过期时间设置</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#缓存穿透、缓存击穿、缓存雪崩"><span class="toc-number"></span> <span class="toc-text">缓存穿透、缓存击穿、缓存雪崩</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#缓存穿透"><span class="toc-number"></span> <span class="toc-text">缓存穿透</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#缓存击穿"><span class="toc-number"></span> <span class="toc-text">缓存击穿</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#缓存雪崩"><span class="toc-number"></span> <span class="toc-text">缓存雪崩</span></a>
+    </div>
+    
+    <div class="back-top iconfont-archer">&#xe639;</div>
+    <div class="sidebar sidebar-hide">
+    <ul class="sidebar-tabs sidebar-tabs-active-0">
+        <li class="sidebar-tab-archives"><span class="iconfont-archer">&#xe67d;</span><span class="tab-name">Archive</span></li>
+        <li class="sidebar-tab-tags"><span class="iconfont-archer">&#xe61b;</span><span class="tab-name">Tag</span></li>
+        <li class="sidebar-tab-categories"><span class="iconfont-archer">&#xe666;</span><span class="tab-name">Cate</span></li>
+    </ul>
+    <div class="sidebar-content sidebar-content-show-archive">
+          <div class="sidebar-panel-archives">
+    <!-- 在ejs中将archive按照时间排序 -->
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <div class="total-and-search">
+        <div class="total-archive">
+        Total : 2
+        </div>
+        <!-- search  -->
+        
+    </div>
+    
+    <div class="post-archive">
+    
+    
+    
+    
+    <div class="archive-year"> 2019 </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">07/05</span><a class="archive-post-title" href= "/2019/07/05/YourFileName/" >YourFileName</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">07/05</span><a class="archive-post-title" href= "/2019/07/05/SpringDataRedis/" >SpringDataRedis</a>
+        </li>
+    
+    </div>
+  </div>
+        <div class="sidebar-panel-tags">
+    <div class="sidebar-tags-name">
+    
+    </div>
+    <div class="iconfont-archer sidebar-tags-empty">&#xe678;</div>
+    <div class="tag-load-fail" style="display: none; color: #ccc; font-size: 0.6rem;">
+    缺失模块。<br/>
+    1、请确保node版本大于6.2<br/>
+    2、在博客根目录（注意不是archer根目录）执行以下命令：<br/>
+    <span style="color: #f75357; font-size: 1rem; line-height: 2rem;">npm i hexo-generator-json-content --save</span><br/>
+    3、在根目录_config.yml里添加配置：
+    <pre style="color: #787878; font-size: 0.6rem;">
+jsonContent:
+  meta: false
+  pages: false
+  posts:
+    title: true
+    date: true
+    path: true
+    text: false
+    raw: false
+    content: false
+    slug: false
+    updated: false
+    comments: false
+    link: false
+    permalink: false
+    excerpt: false
+    categories: true
+    tags: true</pre>
+    </div> 
+    <div class="sidebar-tags-list"></div>
+</div>
+        <div class="sidebar-panel-categories">
+    <div class="sidebar-categories-name">
+    
+    </div>
+    <div class="iconfont-archer sidebar-categories-empty">&#xe678;</div>
+    <div class="sidebar-categories-list"></div>
+</div>
+    </div>
+</div> 
+    <script>
+    var siteMeta = {
+        root: "/",
+        author: "Lin Weichao"
+    }
+</script>
+    <!-- CDN failover -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+    <script type="text/javascript">
+        if (typeof window.$ === 'undefined')
+        {
+            console.warn('jquery load from jsdelivr failed, will load local script')
+            document.write('<script src="/lib/jquery.min.js">\x3C/script>')
+        }
+    </script>
+    <script src="/scripts/main.js"></script>
+    <!-- algolia -->
+    
+    <!-- busuanzi  -->
+    
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+    <!-- CNZZ  -->
+    
+    </div>
+    <!-- async load share.js -->
+    
+        <script src="/scripts/share.js" async></script>    
+     
+    </body>
+</html>
+
+
